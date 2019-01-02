@@ -11,6 +11,7 @@ import (
 
 	kubeapiserveroperatorinformers "github.com/openshift/cluster-kube-apiserver-operator/pkg/generated/informers/externalversions"
 	"github.com/openshift/cluster-kube-apiserver-operator/pkg/operator/configobservation"
+	"github.com/openshift/cluster-kube-apiserver-operator/pkg/operator/configobservation/auth"
 	"github.com/openshift/cluster-kube-apiserver-operator/pkg/operator/configobservation/etcd"
 	"github.com/openshift/cluster-kube-apiserver-operator/pkg/operator/configobservation/images"
 	"github.com/openshift/cluster-kube-apiserver-operator/pkg/operator/configobservation/network"
@@ -32,6 +33,7 @@ func NewConfigObserver(
 			operatorClient,
 			eventRecorder,
 			configobservation.Listers{
+				AuthConfigLister:  authConfigInformer.Lister(),
 				ImageConfigLister: configInformer.Config().V1().Images().Lister(),
 				EndpointsLister:   kubeInformersForKubeSystemNamespace.Core().V1().Endpoints().Lister(),
 				ConfigmapLister:   kubeInformersForKubeSystemNamespace.Core().V1().ConfigMaps().Lister(),
@@ -47,6 +49,7 @@ func NewConfigObserver(
 			images.ObserveInternalRegistryHostname,
 			images.ObserveExternalRegistryHostnames,
 			images.ObserveAllowedRegistriesForImport,
+			auth.ObserveAuthMetadata,
 		),
 	}
 
