@@ -33,11 +33,12 @@ func NewConfigObserver(
 			operatorClient,
 			eventRecorder,
 			configobservation.Listers{
-				AuthConfigLister:  authConfigInformer.Lister(),
+				AuthConfigLister:  configInformer.Config().V1().Authentications().Lister(),
 				ImageConfigLister: configInformer.Config().V1().Images().Lister(),
 				EndpointsLister:   kubeInformersForKubeSystemNamespace.Core().V1().Endpoints().Lister(),
 				ConfigmapLister:   kubeInformersForKubeSystemNamespace.Core().V1().ConfigMaps().Lister(),
 				ImageConfigSynced: configInformer.Config().V1().Images().Informer().HasSynced,
+				AuthConfigSynced:  configInformer.Config().V1().Authentications().Informer().HasSynced,
 				PreRunCachesSynced: []cache.InformerSynced{
 					operatorConfigInformers.Kubeapiserver().V1alpha1().KubeAPIServerOperatorConfigs().Informer().HasSynced,
 					kubeInformersForKubeSystemNamespace.Core().V1().Endpoints().Informer().HasSynced,
@@ -57,6 +58,7 @@ func NewConfigObserver(
 	kubeInformersForKubeSystemNamespace.Core().V1().Endpoints().Informer().AddEventHandler(c.EventHandler())
 	kubeInformersForKubeSystemNamespace.Core().V1().ConfigMaps().Informer().AddEventHandler(c.EventHandler())
 	configInformer.Config().V1().Images().Informer().AddEventHandler(c.EventHandler())
+	configInformer.Config().V1().Authentications().Informer().AddEventHandler(c.EventHandler())
 
 	return c
 }

@@ -213,6 +213,7 @@ var deploymentConfigMaps = []string{
 	"etcd-serving-ca",
 	"kubelet-serving-ca",
 	"sa-token-signing-certs",
+	"oauth-metadata",
 }
 
 // deploymentSecrets is a list of secrets that are directly copied for the current values.  A different actor/controller modifies these.
