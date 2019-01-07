@@ -52,7 +52,7 @@ func ObserveAuthMetadata(genericListers configobserver.Listers, recorder events.
 	var oauthMetadataConfigMap v1.ConfigMapReference
 	oauthMetadataConfigMap = authConfig.Spec.OAuthMetadata
 	if len(oauthMetadataConfigMap.Name) == 0 || len(oauthMetadataConfigMap.Key) == 0 {
-		glog.Warningf("DBG: using status metadata: %s/%s", authConfig.Status.OAuthMetadata)
+		glog.Warningf("DBG: using status metadata: %s/%s", authConfig.Status.OAuthMetadata.Name, authConfig.Status.OAuthMetadata.Key)
 		oauthMetadataConfigMap = authConfig.Status.OAuthMetadata
 	}
 
